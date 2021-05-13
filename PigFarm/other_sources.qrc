@@ -1,0 +1,15 @@
+<RCC>
+    <qresource prefix="/">
+        <file>sources/Aqua.qss</file>
+        <file>sources/bigWritePig.png</file>
+        <file>sources/BlackPig.png</file>
+        <file>sources/littlePig.png</file>
+        <file>sources/button.png</file>
+        <file>sources/MacOS.qss</file>
+        <file>sources/pixmap_pig_1.png</file>
+        <file>sources/pig.png</file>
+        <file>sources/glass.png</file>
+        <file>sources/author.png</file>
+        <file>sources/pig_pixmap_2.png</file>
+    </qresource>
+</RCC>

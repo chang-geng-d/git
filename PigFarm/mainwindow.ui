@@ -98,9 +98,9 @@
             <property name="geometry">
              <rect>
               <x>0</x>
-              <y>-8</y>
-              <width>388</width>
-              <height>518</height>
+              <y>0</y>
+              <width>405</width>
+              <height>510</height>
              </rect>
             </property>
             <attribute name="label">
@@ -115,10 +115,23 @@ border-radius:10px;</string>
                </property>
                <layout class="QGridLayout" name="gridLayout_4">
                 <item row="1" column="0">
-                 <widget class="QLineEdit" name="lineEdit_pigStatus"/>
+                 <widget class="QLineEdit" name="lineEdit_pigStatus">
+                  <property name="font">
+                   <font>
+                    <family>Arial</family>
+                    <pointsize>12</pointsize>
+                   </font>
+                  </property>
+                 </widget>
                 </item>
                 <item row="1" column="3">
                  <widget class="QPushButton" name="Button_pigStatus">
+                  <property name="minimumSize">
+                   <size>
+                    <width>50</width>
+                    <height>0</height>
+                   </size>
+                  </property>
                   <property name="font">
                    <font>
                     <family>Arial</family>
@@ -250,6 +263,12 @@ border-radius:10px;</string>
                <layout class="QGridLayout" name="gridLayout_3">
                 <item row="1" column="1">
                  <widget class="QPushButton" name="Button_penStatus">
+                  <property name="minimumSize">
+                   <size>
+                    <width>50</width>
+                    <height>0</height>
+                   </size>
+                  </property>
                   <property name="font">
                    <font>
                     <family>Arial</family>
@@ -262,7 +281,14 @@ border-radius:10px;</string>
                  </widget>
                 </item>
                 <item row="1" column="0">
-                 <widget class="QLineEdit" name="lineEdit_penStatus"/>
+                 <widget class="QLineEdit" name="lineEdit_penStatus">
+                  <property name="font">
+                   <font>
+                    <family>Arial</family>
+                    <pointsize>11</pointsize>
+                   </font>
+                  </property>
+                 </widget>
                 </item>
                 <item row="0" column="0" colspan="2">
                  <widget class="QLabel" name="label_penStatus">
@@ -292,6 +318,12 @@ border-radius:10px;</string>
                <layout class="QGridLayout" name="gridLayout_7">
                 <item row="0" column="0">
                  <widget class="QPushButton" name="pushButton_restart">
+                  <property name="font">
+                   <font>
+                    <family>Arial</family>
+                    <pointsize>9</pointsize>
+                   </font>
+                  </property>
                   <property name="text">
                    <string>重启</string>
                   </property>
@@ -299,6 +331,12 @@ border-radius:10px;</string>
                 </item>
                 <item row="2" column="0">
                  <widget class="QPushButton" name="Button_aYear">
+                  <property name="font">
+                   <font>
+                    <family>Arial</family>
+                    <pointsize>9</pointsize>
+                   </font>
+                  </property>
                   <property name="text">
                    <string>经过一年</string>
                   </property>
@@ -306,6 +344,12 @@ border-radius:10px;</string>
                 </item>
                 <item row="1" column="0">
                  <widget class="QPushButton" name="pushButton_pause">
+                  <property name="font">
+                   <font>
+                    <family>Arial</family>
+                    <pointsize>9</pointsize>
+                   </font>
+                  </property>
                   <property name="text">
                    <string>暂停</string>
                   </property>
@@ -316,7 +360,7 @@ border-radius:10px;</string>
                   <property name="font">
                    <font>
                     <family>Arial</family>
-                    <pointsize>12</pointsize>
+                    <pointsize>11</pointsize>
                    </font>
                   </property>
                   <property name="text">
@@ -461,6 +505,16 @@ border-radius:10px;</string>
                 </item>
                 <item row="1" column="1">
                  <widget class="QPushButton" name="Button_soldRecord">
+                  <property name="font">
+                   <font>
+                    <family>Arial</family>
+                    <pointsize>12</pointsize>
+                   </font>
+                  </property>
+                  <property name="styleSheet">
+                   <string notr="true">border:2px groove gray;
+border-radius:10px;</string>
+                  </property>
                   <property name="text">
                    <string>查询</string>
                   </property>

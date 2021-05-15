@@ -24,7 +24,7 @@ public:
     bool is_BlackPigPen(){return is_blackPigPen;}//是否是黑猪栏
     int showNumAll(void){return num;}//返回猪栏中猪的总数
     int showInfected_pigNum(void){return infected_pigNum;}//返回此猪栏中被感染的猪的数量
-    void setInfect(void){pigs->is_infected=true;}
+    void setInfect(void){pigs->is_infected=true;++infected_pigNum;}
     void infect_inPen(void);//猪栏内50%机率感染
     bool isIsolated=false;    //此猪栏是否被隔离
     bool isInfected=false;    //说明此猪圈是否有感染猪瘟的猪

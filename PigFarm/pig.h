@@ -7,7 +7,7 @@
 class Pig
 {
 public:
-    Pig();
+    //Pig();
     Pig(bool is_black);
     Pig(QDataStream *stream);//从文件初始化
     void writeFile(QDataStream *stream);

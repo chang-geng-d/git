@@ -21,6 +21,13 @@ MainWindow::MainWindow(QWidget *parent)
     ui->stackedWidget->setCurrentWidget(ui->page_manage);
     ui->toolBox->setCurrentWidget(ui->toolPage_1);
     ui->label_pixmap_pig_1->setScaledContents(true);
+    ui->pushButton_pause->setEnabled(false);
+    ui->pushButton_restart->setEnabled(false);
+    ui->pushButton_pauseInfect->setEnabled(false);
+    ui->pushButton_infectRestart->setEnabled(false);
+    ui->pushButton_isolateAllInfectedPens->setEnabled(false);
+    ui->pushButton_isolatePenInNum->setEnabled(false);
+    ui->lineEdit_isolateNum->setEnabled(false);
     //
     QFile file("./restartInfor.txt");
     if(file.exists()){
@@ -57,6 +64,9 @@ void MainWindow::on_Button_aYear_clicked()
 {
     timerID_1=this->startTimer(100);//每隔1秒启动一次事件
     ++farm->Year;
+    ui->Button_aYear->setEnabled(false);
+    ui->pushButton_pause->setEnabled(true);
+    ui->pushButton_startInfect->setEnabled(false);
 }
 
 void MainWindow::timerEvent(QTimerEvent *event){
@@ -76,27 +86,52 @@ void MainWindow::timerEvent(QTimerEvent *event){
             this->killTimer(timerID_1);
             sum=0;
             ui->label_year->setNum(sum);
+            ui->Button_aYear->setEnabled(true);
+            ui->pushButton_restart->setEnabled(false);
+            ui->pushButton_pause->setEnabled(false);
+            ui->pushButton_startInfect->setEnabled(true);
         }
     }
     else if(event->timerId()==timerID_2){
         static int sum_2=0;
-        qDebug()<<"sum_2="<<sum_2;
+        //qDebug()<<"sum_2="<<sum_2;
         if(farm->showInfectedNumAll()==farm->showNumAll()){
             ui->display_textEdit->setText("经过");
             ui->display_textEdit->append(QString(sum_2));
             ui->display_textEdit->append("天之后猪场中猪全部被感染");
             killTimer(timerID_2);
             sum_2=0;
+            ui->pushButton_pauseInfect->setEnabled(false);
+            ui->pushButton_infectRestart->setEnabled(false);
+            ui->pushButton_startInfect->setEnabled(true);
+            ui->Button_aYear->setEnabled(true);
+            ui->pushButton_isolateAllInfectedPens->setEnabled(false);
+            ui->pushButton_isolatePenInNum->setEnabled(false);
+            ui->lineEdit_isolateNum->setEnabled(false);
         }
-        else if(farm->isInfectAllCanBeInfected()){
+        if(farm->isInfectAllCanBeInfected()==true){
             ui->display_textEdit->setText("无其余任何未被感染的或未被隔离的猪栏可感染");
             killTimer(timerID_2);
             sum_2=0;
+            ui->pushButton_pauseInfect->setEnabled(false);
+            ui->pushButton_infectRestart->setEnabled(false);
+            ui->pushButton_startInfect->setEnabled(true);
+            ui->Button_aYear->setEnabled(true);
+            ui->pushButton_isolateAllInfectedPens->setEnabled(false);
+            ui->pushButton_isolatePenInNum->setEnabled(false);
+            ui->lineEdit_isolateNum->setEnabled(false);
         }
-        else if(sum_2>1080){
+        if(sum_2>1080){
             ui->display_textEdit->setText("3年后，猪瘟消失");
             killTimer(timerID_2);
             sum_2=0;
+            ui->pushButton_pauseInfect->setEnabled(false);
+            ui->pushButton_infectRestart->setEnabled(false);
+            ui->pushButton_startInfect->setEnabled(true);
+            ui->Button_aYear->setEnabled(true);
+            ui->pushButton_isolateAllInfectedPens->setEnabled(false);
+            ui->pushButton_isolatePenInNum->setEnabled(false);
+            ui->lineEdit_isolateNum->setEnabled(false);
         }
         farm->infect_betweenPen();
         ++sum_2;
@@ -155,6 +190,9 @@ void MainWindow::on_Button_penStatus_clicked()
     if(num>=0&&num<100){
         ui->display_textEdit->setText(farm->refer_pen(num));
     }
+    else{
+        ui->display_textEdit->setText("无法查询:对应的猪栏编号不存在");
+    }
 }
 
 void MainWindow::on_Button_pigStatus_clicked()
@@ -164,16 +202,23 @@ void MainWindow::on_Button_pigStatus_clicked()
     if(pen_num>=0&&pen_num<100){
         ui->display_textEdit->setText(farm->refer_pig(pen_num,pig_num));
     }
+    else{
+        ui->display_textEdit->setText("无法查询:对应的猪栏编号不存在");
+    }
 }
 
 void MainWindow::on_pushButton_restart_clicked()
 {
     timerID_1=this->startTimer(100);
+    ui->pushButton_restart->setEnabled(false);
+    ui->pushButton_pause->setEnabled(true);
 }
 
 void MainWindow::on_pushButton_pause_clicked()
 {
     this->killTimer(timerID_1);
+    ui->pushButton_pause->setEnabled(false);
+    ui->pushButton_restart->setEnabled(true);
 }
 
 void MainWindow::on_pushButton_weightChart_clicked()
@@ -334,9 +379,7 @@ void MainWindow::on_pushButton_isolatePenInNum_clicked()
         ui->display_textEdit->setText("\n无法隔离：对应编号的猪栏不存在");
     }
     else{
-        ui->display_textEdit->setText("\n已隔离编号为");
-        ui->display_textEdit->append(QString(num));
-        ui->display_textEdit->append("的猪栏");
+        ui->display_textEdit->setText(QString("\n已隔离编号为%1的猪栏").arg(num));
     }
 }
 
@@ -348,11 +391,19 @@ void MainWindow::on_pushButton_startInfect_clicked()
         timerID_2=this->startTimer(500);
     }
     farm->startInfect();
+    ui->pushButton_startInfect->setEnabled(false);
+    ui->pushButton_pauseInfect->setEnabled(true);
+    ui->Button_aYear->setEnabled(false);
+    ui->pushButton_isolateAllInfectedPens->setEnabled(true);
+    ui->pushButton_isolatePenInNum->setEnabled(true);
+    ui->lineEdit_isolateNum->setEnabled(true);
 }
 
 void MainWindow::on_pushButton_pauseInfect_clicked()
 {
     killTimer(timerID_2);
+    ui->pushButton_pauseInfect->setEnabled(false);
+    ui->pushButton_infectRestart->setEnabled(true);
 }
 
 void MainWindow::on_pushButton_infectRestart_clicked()
@@ -362,6 +413,8 @@ void MainWindow::on_pushButton_infectRestart_clicked()
         killTimer(timerID_2);
         timerID_2=this->startTimer(500);
     }
+    ui->pushButton_pauseInfect->setEnabled(true);
+    ui->pushButton_infectRestart->setEnabled(false);
 }
 
 void MainWindow::on_actiondisplay_triggered()

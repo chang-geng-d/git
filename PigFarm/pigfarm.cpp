@@ -93,12 +93,10 @@ void PigFarm::AddWeight(){
 }
 
 void PigFarm::OutPen(){
-    QString fileName_out("./outPenLog_Year_");
-    fileName_out+=QString::number(Year);
-    fileName_out+=".txt";
-    QString fileName_in("./buyInLog_Year_");
-    fileName_in+=QString::number(Year);
-    fileName_in+=".txt";
+    QString fileName_out=QString("./outPenLog_Year_%1.txt").arg(Year);
+    QString fileName_in=QString("./buyInLog_Year_%1.txt").arg(Year);
+    //fileName_in+=QString::number(Year);
+    //fileName_in+=".txt";
     //qDebug()<<"OutPen_in";
     QFile file_out(fileName_out);
     QFile file_in(fileName_in);
@@ -179,21 +177,21 @@ void PigFarm::infect_betweenPen(){
     for(int i=0;i<100;++i){
         if(pen[i]->isInfected){
             if(pen[i]->isIsolated==false){
-                if(i-1>0&&(pen[i-1]->showNumAll()!=pen[i-1]->showInfected_pigNum())){
+                if(i-1>0&&pen[i-1]->isInfected==false){
                     qsrand(seed*seed*seed);
                     if(qrand()%101<=15){
                         pen[i-1]->isInfected=true;
                         //qDebug()<<"i-1="<<i-1;
-                        pen[i-1]->infect_inPen();
+                        pen[i-1]->setInfect();
                     }
                     ++seed;
                 }
-                if(i+1<100&&(pen[i+1]->showNumAll()!=pen[i+1]->showInfected_pigNum())){
+                if(i+1<100&&pen[i+1]->isInfected==false){
                     qsrand(seed*seed*seed);
                     if(qrand()%101<=15){
                         pen[i+1]->isInfected=true;
-                        qDebug()<<"i+1="<<i+1;
-                        pen[i+1]->infect_inPen();
+                        //qDebug()<<"i+1="<<i+1;
+                        pen[i+1]->setInfect();
                     }
                     ++seed;
                 }
@@ -270,10 +268,16 @@ void PigFarm::isolateInfectedPenByNum(int num){
 bool PigFarm::isInfectAllCanBeInfected(){
     bool flag=true;
     for(int i=0;i<100;++i){
-        if(pen[i]->isIsolated==false){
-            if(pen[i]->showInfected_pigNum()!=pen[i]->showNumAll()){
+        if(pen[i]->isInfected==true){
+            if(pen[i]->isIsolated==false){
                 flag=false;
                 break;
+            }
+            else{
+                if(pen[i]->showInfected_pigNum()<pen[i]->showNumAll()){
+                    flag=false;
+                    break;
+                }
             }
         }
     }

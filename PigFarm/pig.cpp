@@ -3,17 +3,17 @@
 #include<QTime>
 #include<QtGlobal>//提供随机数生成函数
 unsigned int Pig::randseed=0;//由于直接放于类头文件中会出现重定义错误，故静态成员放于实现部分定义
-Pig::Pig()
-{
-    qsrand(randseed*randseed*100);//初始化随机数种子
-    weight=(qrand()%31)+20;
-    feeding_time=0;
-    breed=qrand()%3;
-    num=0;
-    nextPig=NULL;
-    is_infected=false;
-    ++randseed;
-}
+//Pig::Pig()
+//{
+//    qsrand(randseed*randseed*100);//初始化随机数种子
+//    weight=(qrand()%31)+20;
+//    feeding_time=0;
+//    breed=qrand()%3;
+//    num=0;
+//    nextPig=NULL;
+//    is_infected=false;
+//    ++randseed;
+//}
 
 Pig::Pig(QDataStream *stream){
     *stream>>num>>weight>>breed>>feeding_time>>is_infected;
@@ -32,7 +32,6 @@ Pig::Pig(bool is_black){
     qsrand(randseed*randseed*100);//初始化随机数种子
     weight=(qrand()%31)+20;
     feeding_time=0;
-    num=0;
     nextPig=NULL;
     if(is_black==true){
         breed=0;

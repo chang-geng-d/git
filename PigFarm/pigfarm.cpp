@@ -25,9 +25,9 @@ PigFarm::PigFarm(QFile &file){
         file.close();
         //qDebug()<<"PigFarm_ok";
     }
-    else{
+    //else{
         //qDebug()<<"文件打开错误";
-    }
+    //}
 
 }
 
@@ -219,16 +219,16 @@ int PigFarm::showInfectedNumAll(){
 }
 
 void PigFarm::showPigFarmStatus_whenInfecting(QString &str){
-    str+="猪场中猪总数：";
-    str+=QString::number(showNumAll());
-    str+="\n猪场中被感染猪总数：";
-    str+=QString::number(showInfectedNumAll());
+    str+=QString("猪场中猪总数：%1").arg(showNumAll());
+    //str+=QString::number(showNumAll());
+    str+=QString("\n猪场中被感染猪总数：%1").arg(showInfectedNumAll());
+    //str+=QString::number(showInfectedNumAll());
     str+="\n感染率：";
     str+=QString::number((float(showInfectedNumAll())/showNumAll())*100);
     str+="%\n<!-----分割线----->";
     for(int i=0;i<100;++i){
-        str+="\n猪栏编号：";
-        str+=QString::number(i);
+        str+=QString("\n猪栏编号：%1").arg(i);
+        //str+=QString::number(i);
         str+="\n是否有感染的猪：";
         if(pen[i]->isInfected){
             str+="是";
@@ -243,10 +243,10 @@ void PigFarm::showPigFarmStatus_whenInfecting(QString &str){
         else{
             str+="否";
         }
-        str+="\n猪总数：";
-        str+=QString::number(pen[i]->showNumAll());
-        str+="\n被感染猪数量：";
-        str+=QString::number(pen[i]->showInfected_pigNum());
+        str+=QString("\n猪总数：%1").arg(pen[i]->showNumAll());
+        //str+=QString::number(pen[i]->showNumAll());
+        str+=QString("\n被感染猪数量：%1").arg(pen[i]->showInfected_pigNum());
+        //str+=QString::number(pen[i]->showInfected_pigNum());
         str+="\n--------------------";
     }
 }

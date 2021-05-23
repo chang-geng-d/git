@@ -109,7 +109,7 @@ void MainWindow::timerEvent(QTimerEvent *event){
             ui->pushButton_isolatePenInNum->setEnabled(false);
             ui->lineEdit_isolateNum->setEnabled(false);
         }
-        if(farm->isInfectAllCanBeInfected()==true){
+        else if(farm->isInfectAllCanBeInfected()==true){
             ui->display_textEdit->setText("无其余任何未被感染的或未被隔离的猪栏可感染");
             killTimer(timerID_2);
             sum_2=0;
@@ -121,7 +121,7 @@ void MainWindow::timerEvent(QTimerEvent *event){
             ui->pushButton_isolatePenInNum->setEnabled(false);
             ui->lineEdit_isolateNum->setEnabled(false);
         }
-        if(sum_2>1080){
+        else if(sum_2>1080){
             ui->display_textEdit->setText("3年后，猪瘟消失");
             killTimer(timerID_2);
             sum_2=0;

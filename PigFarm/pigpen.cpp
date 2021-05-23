@@ -179,15 +179,15 @@ QString PigPen::pig_status(int num){//返回对应编号猪的状态(假如对�
 QString PigPen::pig_NumAndBreed(){//用户查询猪栏中猪的种类和数量
     QString str;
     if(is_blackPigPen){
-        str="种类：黑猪\n数量：";
-        str+=QString::number(num);
+        str=QString("种类：黑猪\n数量：%1").arg(num);
+        //str+=QString::number(num);
         return str;
     }
     else{
-        str="种类：小花猪\n数量：";
-        str+=QString::number(breed_num[1]);
-        str+="\n种类：大花白猪\n数量：";
-        str+=QString::number(breed_num[2]);
+        str=QString("种类：小花猪\n数量：%1").arg(breed_num[1]);
+        //str+=QString::number(breed_num[1]);
+        str+=QString("\n种类：大花白猪\n数量：%1").arg(breed_num[2]);
+        //str+=QString::number(breed_num[2]);
         return str;
     }
 }

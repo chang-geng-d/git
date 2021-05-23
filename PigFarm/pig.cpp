@@ -52,9 +52,7 @@ void Pig::weight_add(){
 
 float Pig::price(){
     int unit_price[3]={15, 7, 6};
-    float price;
-    price=unit_price[breed]*weight;
-    return price;
+    return unit_price[breed]*weight;
 }
 
 bool Pig::can_be_sold(){
@@ -72,12 +70,12 @@ bool Pig::can_be_sold(){
 QString Pig::status(){
     QString status;
     QString unit_breed[3]={"黑猪","小花猪","大花白猪"};
-    status="\n品种：";
-    status+=unit_breed[breed];
-    status+="\n重量：";
-    status+=QString::number(weight);
-    status+="\n饲养天数：";
-    status+=QString::number(feeding_time);
+    status=QString("\n品种：%1").arg(unit_breed[breed]);
+    //status+=unit_breed[breed];
+    status+=QString("\n重量：%1").arg(weight);
+    //status+=QString::number(weight);
+    status+=QString("\n饲养天数：%1").arg(feeding_time);
+    //status+=QString::number(feeding_time);
     status+="\n是否感染：";
     if(is_infected){
         status+="是";

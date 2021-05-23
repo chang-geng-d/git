@@ -7,7 +7,7 @@ class visual_pig : public QLabel
 {
     Q_OBJECT
 public:
-    explicit visual_pig(QWidget *parent = nullptr,int penID=0,int pigID=0);
+    explicit visual_pig(QWidget *parent = nullptr,int penID=0,int pigID=0,int breed=0);
 
 signals:
     void clicked(int penID,int pigID);

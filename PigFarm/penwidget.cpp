@@ -16,9 +16,10 @@ void penWidget::showPigsInPen(){
     pigs=new QLabel*[num];
     //qDebug()<<"pigs="<<pigs;
     int pigID=0;
+    int breed=0;
     for(int i=0;i<num;++i){
         //qDebug()<<"i="<<i<<"\tpigID="<<pigID;
-        int breed=farm->showPigBreedInPen(penID,pigID);
+        breed=farm->showPigBreedInPen(penID,pigID);
         //qDebug()<<"breed="<<breed;
         if(breed==-1){
             ++pigID;
@@ -26,21 +27,22 @@ void penWidget::showPigsInPen(){
             continue;
         }
         else{
-            pigs[i]=new visual_pig(this,penID,pigID);
-            pigs[i]->resize(60,60);
+            pigs[i]=new visual_pig(this,penID,pigID,breed);
+            //pigs[i]->resize(60,60);
             connect(pigs[i],SIGNAL(clicked(int,int)),this,SLOT(pig_clicked(int,int)));
-            if(breed==0){
-                pigs[i]->setPixmap(QPixmap("://sources/BlackPig.png"));
-                qsrand(seed*seed*752);
-            }
-            else if(breed==1){
-                pigs[i]->setPixmap(QPixmap("://sources/littlePig.png"));
-                qsrand(seed*seed*183);
-            }
-            else if(breed==2){
-                pigs[i]->setPixmap(QPixmap("://sources/bigWritePig.png"));
-                qsrand(seed*seed*745);
-            }
+            //if(breed==0){
+            //    pigs[i]->setPixmap(QPixmap("://sources/BlackPig.png"));
+            //    qsrand(seed*seed*752);
+            //}
+            //else if(breed==1){
+            //    pigs[i]->setPixmap(QPixmap("://sources/littlePig.png"));
+            //    qsrand(seed*seed*183);
+            //}
+            //else if(breed==2){
+            //    pigs[i]->setPixmap(QPixmap("://sources/bigWritePig.png"));
+            //    qsrand(seed*seed*745);
+            //}
+            qsrand(seed*seed*QTime(0,0,0).secsTo(QTime::currentTime()));
             pigs[i]->move(qrand()%580,qrand()%580);
             pigs[i]->show();
             ++seed;
@@ -120,8 +122,8 @@ void penWidget::mousePressEvent(QMouseEvent *event){
             //qDebug()<<"pigs="<<pigs;
             --penID;
             showPigsInPen();
-            QString str="猪栏编号：";
-            str+=QString::number(penID);
+            QString str=QString("猪栏编号：%1").arg(penID);
+            //str+=QString::number(penID);
             ui->statusbar->showMessage(str);
         }
         else{
@@ -136,8 +138,8 @@ void penWidget::mousePressEvent(QMouseEvent *event){
             ++penID;
             //qDebug()<<"penID="<<penID;
             showPigsInPen();
-            QString str="猪栏编号：";
-            str+=QString::number(penID);
+            QString str=QString("猪栏编号：%1").arg(penID);
+            //str+=QString::number(penID);
             ui->statusbar->showMessage(str);
         }
         else{

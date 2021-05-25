@@ -32,7 +32,7 @@ public:
     int showInfectedNumAll(void);
     void startInfect(void);
     void infect_betweenPen(void);//猪栏之间15%机率感染
-    void isolateAllInfectedPen(void);//隔离所有受感染的猪栏
+    QString isolateAllInfectedPen(void);//隔离所有受感染的猪栏
     void isolateInfectedPenByNum(int num);//隔离对应编号的猪栏
     int Year;
 private:

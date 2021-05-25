@@ -69,7 +69,9 @@ penWidget::penWidget(QWidget *parent,PigFarm *pigFarm) :
     this->farm=pigFarm;
     showPigsInPen();
     timerID=this->startTimer(100);
+    //qDebug()<<"enter";
     QMessageBox message(QMessageBox::Information,"提示","使用左键单击查看上一猪栏，使用右键单击查看下一猪栏",QMessageBox::Ok,this);
+    message.exec();
 }
 
 penWidget::~penWidget()

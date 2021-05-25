@@ -62,7 +62,7 @@ void MainWindow::on_actionto_page_chart_triggered()
 
 void MainWindow::on_Button_aYear_clicked()
 {
-    timerID_1=this->startTimer(100);//每隔1秒启动一次事件
+    timerID_1=this->startTimer(100);//每隔0.1秒启动一次事件
     ++farm->Year;
     ui->Button_aYear->setEnabled(false);
     ui->pushButton_pause->setEnabled(true);
@@ -90,15 +90,26 @@ void MainWindow::timerEvent(QTimerEvent *event){
             ui->pushButton_restart->setEnabled(false);
             ui->pushButton_pause->setEnabled(false);
             ui->pushButton_startInfect->setEnabled(true);
+            return;
         }
     }
     else if(event->timerId()==timerID_2){
         static int sum_2=0;
         //qDebug()<<"sum_2="<<sum_2;
-        if(farm->showInfectedNumAll()==farm->showNumAll()){
-            ui->display_textEdit->setText("经过");
-            ui->display_textEdit->append(QString(sum_2));
-            ui->display_textEdit->append("天之后猪场中猪全部被感染");
+        int numAll=farm->showNumAll(),InfectedNum=farm->showInfectedNumAll();
+        bool flag=farm->isInfectAllCanBeInfected();
+        if((numAll==InfectedNum)||(flag==true)||(sum_2>1080)){
+            if(numAll==InfectedNum){
+                ui->display_textEdit->setText(QString("经过%1天之后猪场中猪全部被感染").arg(sum_2));
+                //ui->display_textEdit->append(QString(sum_2));
+                //ui->display_textEdit->append("天之后猪场中猪全部被感染");
+            }
+            else if(flag==true){
+                ui->display_textEdit->setText("无其余任何未被感染的或未被隔离的猪栏可感染");
+            }
+            else if(sum_2>1080){
+                ui->display_textEdit->setText("3年后，猪瘟消失");
+            }
             killTimer(timerID_2);
             sum_2=0;
             ui->pushButton_pauseInfect->setEnabled(false);
@@ -108,30 +119,7 @@ void MainWindow::timerEvent(QTimerEvent *event){
             ui->pushButton_isolateAllInfectedPens->setEnabled(false);
             ui->pushButton_isolatePenInNum->setEnabled(false);
             ui->lineEdit_isolateNum->setEnabled(false);
-        }
-        else if(farm->isInfectAllCanBeInfected()==true){
-            ui->display_textEdit->setText("无其余任何未被感染的或未被隔离的猪栏可感染");
-            killTimer(timerID_2);
-            sum_2=0;
-            ui->pushButton_pauseInfect->setEnabled(false);
-            ui->pushButton_infectRestart->setEnabled(false);
-            ui->pushButton_startInfect->setEnabled(true);
-            ui->Button_aYear->setEnabled(true);
-            ui->pushButton_isolateAllInfectedPens->setEnabled(false);
-            ui->pushButton_isolatePenInNum->setEnabled(false);
-            ui->lineEdit_isolateNum->setEnabled(false);
-        }
-        else if(sum_2>1080){
-            ui->display_textEdit->setText("3年后，猪瘟消失");
-            killTimer(timerID_2);
-            sum_2=0;
-            ui->pushButton_pauseInfect->setEnabled(false);
-            ui->pushButton_infectRestart->setEnabled(false);
-            ui->pushButton_startInfect->setEnabled(true);
-            ui->Button_aYear->setEnabled(true);
-            ui->pushButton_isolateAllInfectedPens->setEnabled(false);
-            ui->pushButton_isolatePenInNum->setEnabled(false);
-            ui->lineEdit_isolateNum->setEnabled(false);
+            return;
         }
         farm->infect_betweenPen();
         ++sum_2;
@@ -140,47 +128,48 @@ void MainWindow::timerEvent(QTimerEvent *event){
 
 void MainWindow::on_Button_soldRecord_clicked()
 {
-    QString fileName("./outPenLog_Year_");
     int year=farm->Year;
     year-=ui->comboBox_soldRecord->currentIndex();
-    fileName+=QString::number(year);
-    fileName+=".txt";
+    QString fileName(QString("./outPenLog_Year_%1.txt").arg(year));
+    //fileName+=QString::number(year);
+    //fileName+=".txt";
     QFile file(fileName);
     if(file.exists()){
         file.open(QIODevice::ReadOnly);
         if(file.isOpen()){
-            QString fileStr;
-            while(file.atEnd()==0){
-                fileStr+=file.readLine();
-            }
-            ui->display_textEdit->setText(fileStr);
+            QString fileStr(file.readAll());
+            //fileStr=file.readAll();
+            //while(file.atEnd()==0){
+            //    fileStr+=file.readLine();
+            //}
             file.close();
+            ui->display_textEdit->setText(fileStr);
         }
     }
     else{
-        ui->display_textEdit->setText("None");
+        ui->display_textEdit->setText("对应的卖出记录不存在");
     }
 }
 
 void MainWindow::on_Button_buyPig_clicked()
 {
-    QString fileName("./buyInLog_Year_");
     int year=farm->Year;
     year-=ui->comboBox_buyPig->currentIndex();
-    fileName+=QString::number(year);
-    fileName+=".txt";
+    QString fileName(QString("./buyInLog_Year_%1.txt").arg(year));
+    //fileName+=QString::number(year);
+    //fileName+=".txt";
     QFile file(fileName);
     if(file.exists()){
         file.open(QIODevice::ReadOnly);
         if(file.isOpen()){
-            QString fileStr;
-            fileStr=file.readAll();
+            QString fileStr(file.readAll());
+            //fileStr=file.readAll();
             file.close();
             ui->display_textEdit->setText(fileStr);
         }
     }
     else{
-        ui->display_textEdit->setText("None");
+        ui->display_textEdit->setText("对应的买入记录不存在");
     }
 }
 
@@ -367,8 +356,8 @@ void MainWindow::on_pushButton_showPigFarmStatus_clicked()
 
 void MainWindow::on_pushButton_isolateAllInfectedPens_clicked()
 {
-    farm->isolateAllInfectedPen();
-    ui->display_textEdit->setText("\n已自动隔离所有被感染的猪栏");
+    ui->display_textEdit->setText("已自动隔离所有被感染的猪栏\n");
+    ui->display_textEdit->append(farm->isolateAllInfectedPen());
 }
 
 void MainWindow::on_pushButton_isolatePenInNum_clicked()
@@ -376,10 +365,10 @@ void MainWindow::on_pushButton_isolatePenInNum_clicked()
     int num=ui->lineEdit_isolateNum->text().toInt();
     farm->isolateInfectedPenByNum(num);
     if(num<0||num>99){
-        ui->display_textEdit->setText("\n无法隔离：对应编号的猪栏不存在");
+        ui->display_textEdit->setText("无法隔离：对应编号的猪栏不存在");
     }
     else{
-        ui->display_textEdit->setText(QString("\n已隔离编号为%1的猪栏").arg(num));
+        ui->display_textEdit->setText(QString("已隔离编号为%1的猪栏").arg(num));
     }
 }
 

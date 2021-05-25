@@ -29,7 +29,7 @@ void Pig::writeFile(QDataStream *stream){
 }
 
 Pig::Pig(bool is_black){
-    qsrand(randseed*randseed*100);//初始化随机数种子
+    qsrand(randseed*randseed*QTime(0,0,0).secsTo(QTime::currentTime()));//初始化随机数种子
     weight=(qrand()%31)+20;
     feeding_time=0;
     nextPig=NULL;

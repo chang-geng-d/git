@@ -221,15 +221,15 @@ int PigFarm::showInfectedNumAll(){
 void PigFarm::showPigFarmStatus_whenInfecting(QString &str){
     str+=QString("猪场中猪总数：%1").arg(showNumAll());
     //str+=QString::number(showNumAll());
-    str+=QString("\n猪场中被感染猪总数：%1").arg(showInfectedNumAll());
+    str+=QString("\n猪场中被感染猪总数：%1\n感染率：%2").arg(showInfectedNumAll()).arg((float(showInfectedNumAll())/showNumAll())*100);
     //str+=QString::number(showInfectedNumAll());
-    str+="\n感染率：";
-    str+=QString::number((float(showInfectedNumAll())/showNumAll())*100);
+    //str+="\n感染率：";
+    //str+=QString::number((float(showInfectedNumAll())/showNumAll())*100);
     str+="%\n<!-----分割线----->";
     for(int i=0;i<100;++i){
-        str+=QString("\n猪栏编号：%1").arg(i);
+        str+=QString("\n猪栏编号：%1\n是否有感染的猪：").arg(i);
         //str+=QString::number(i);
-        str+="\n是否有感染的猪：";
+        //str+="\n是否有感染的猪：";
         if(pen[i]->isInfected){
             str+="是";
         }
@@ -243,20 +243,25 @@ void PigFarm::showPigFarmStatus_whenInfecting(QString &str){
         else{
             str+="否";
         }
-        str+=QString("\n猪总数：%1").arg(pen[i]->showNumAll());
+        str+=QString("\n猪总数：%1\n被感染猪数量：%2").arg(pen[i]->showNumAll()).arg(pen[i]->showInfected_pigNum());
         //str+=QString::number(pen[i]->showNumAll());
-        str+=QString("\n被感染猪数量：%1").arg(pen[i]->showInfected_pigNum());
+        //str+=QString("\n被感染猪数量：%1").arg(pen[i]->showInfected_pigNum());
         //str+=QString::number(pen[i]->showInfected_pigNum());
         str+="\n--------------------";
     }
 }
 
-void PigFarm::isolateAllInfectedPen(){
+QString PigFarm::isolateAllInfectedPen(){
+    QString str;
     for(int i=0;i<100;++i){
-        if(pen[i]->isInfected){
+        if(pen[i]->isInfected==true&&pen[i]->isIsolated==false){
             pen[i]->isIsolated=true;
+            str+=QString("\n猪栏编号：%1\n猪总数：%2\n被感染猪数量：%3").arg(i).arg(pen[i]->showNumAll()).arg(pen[i]->showInfected_pigNum());
+            //str+=QString("\n猪总数：%1").arg(pen[i]->showNumAll());
+            //str+=QString("\n被感染猪数量：%1").arg(pen[i]->showInfected_pigNum());
         }
     }
+    return str;
 }
 
 void PigFarm::isolateInfectedPenByNum(int num){

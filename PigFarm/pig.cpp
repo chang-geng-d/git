@@ -20,11 +20,7 @@ Pig::Pig(QDataStream *stream){
 }
 
 void Pig::writeFile(QDataStream *stream){
-    *stream<<num;
-    *stream<<weight;
-    *stream<<breed;
-    *stream<<feeding_time;
-    *stream<<is_infected;
+    *stream<<num<<weight<<breed<<feeding_time<<is_infected;
     //qDebug()<<num<<weight<<breed<<feeding_time<<is_infected;
 }
 

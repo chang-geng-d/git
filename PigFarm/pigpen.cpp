@@ -7,7 +7,7 @@ unsigned int PigPen::randseed=0;//由于直接放于类头文件中会出现重�
 PigPen::PigPen()//构造函数，在猪栏里随机生成猪
 {
     //qsrand(QTime(0,0,0).secsTo(QTime::currentTime()));
-    qsrand(randseed*randseed*100);
+    qsrand(randseed*randseed*QTime(0,0,0).secsTo(QTime::currentTime()));
     //qDebug()<<randseed;
     infected_pigNum=0;
     isInfected=false;

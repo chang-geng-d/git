@@ -20,14 +20,34 @@ MainWindow::MainWindow(QWidget *parent)
     this->setWindowIcon(QIcon("://sources/pig.png"));
     ui->stackedWidget->setCurrentWidget(ui->page_manage);
     ui->toolBox->setCurrentWidget(ui->toolPage_1);
-    ui->label_pixmap_pig_1->setScaledContents(true);
-    ui->pushButton_pause->setEnabled(false);
-    ui->pushButton_restart->setEnabled(false);
-    ui->pushButton_pauseInfect->setEnabled(false);
-    ui->pushButton_infectRestart->setEnabled(false);
-    ui->pushButton_isolateAllInfectedPens->setEnabled(false);
-    ui->pushButton_isolatePenInNum->setEnabled(false);
-    ui->lineEdit_isolateNum->setEnabled(false);
+    //ui->label_pixmap_pig_1->setScaledContents(true);
+    //ui->pushButton_pause->setEnabled(false);
+    //ui->pushButton_restart->setEnabled(false);
+    //ui->pushButton_pauseInfect->setEnabled(false);
+    //ui->pushButton_infectRestart->setEnabled(false);
+    //ui->pushButton_isolateAllInfectedPens->setEnabled(false);
+    //ui->pushButton_isolatePenInNum->setEnabled(false);
+    //ui->lineEdit_isolateNum->setEnabled(false);
+    //
+    //设置初始ChartView
+    QChart *m_chart = new QChart();
+    m_chart->setTheme(QChart::ChartThemeLight);//设置白色主题
+    m_chart->setDropShadowEnabled(true);//背景阴影
+    m_chart->setTitleBrush(QBrush(QColor(0, 0, 255))); //设置标题Brush
+    m_chart->setTitleFont(QFont("微软雅黑"));//设置标题字体
+    //修改说明样式
+    m_chart->legend()->setVisible(true);
+    m_chart->legend()->setAlignment(Qt::AlignRight);//底部对齐
+    m_chart->legend()->setBackgroundVisible(true);//设置背景是否可视
+    m_chart->legend()->setAutoFillBackground(true);//设置背景自动填充
+    m_chart->legend()->setColor(QColor(222, 233, 251)); //设置颜色
+    m_chart->legend()->setLabelColor(QColor(0, 100, 255)); //设置标签颜色
+    m_chart->legend()->setMaximumHeight(150);
+
+    chartView=new QChartView(m_chart,ui->ChartView);
+    chartView->setRenderHint(QPainter::Antialiasing);
+    chartView->resize(730,580);
+    chartView->hide();
     //
     QFile file("./restartInfor.txt");
     if(file.exists()){
@@ -212,139 +232,126 @@ void MainWindow::on_pushButton_pause_clicked()
 
 void MainWindow::on_pushButton_weightChart_clicked()
 {
+    QString str("体重分布图");
     int sum=0,weights[4]={0};
     farm->showDifferWeights(weights);
     sum=weights[0]+weights[1]+weights[2]+weights[3];
-    QChart *m_chart = new QChart();
-    QPieSeries *series = new QPieSeries();    //连续的餅图数据
-    series->append("0~50斤之间",weights[0]/float(sum));
-    series->append("50~100斤之间",weights[1]/float(sum));
-    series->append("100~150斤之间",weights[2]/float(sum));
-    series->append("150斤之上",weights[3]/float(sum));
+    if(chartView->chart()->title()==str){
+        QPieSeries *series=(QPieSeries *)chartView->chart()->series()[0];
+        series->slices().at(0)->setValue(weights[0]/float(sum));
+        series->slices().at(1)->setValue(weights[1]/float(sum));
+        series->slices().at(2)->setValue(weights[2]/float(sum));
+        series->slices().at(3)->setValue(weights[3]/float(sum));
+        //qDebug()<<"update";
+        chartView->update();
+    }
+    else{
+        if(!chartView->chart()->series().isEmpty()){
+            chartView->chart()->removeSeries(chartView->chart()->series()[0]);
+        }
+        QPieSeries *series = new QPieSeries();    //连续的餅图数据
+        series->append("0~50斤之间",weights[0]/float(sum));
+        series->append("50~100斤之间",weights[1]/float(sum));
+        series->append("100~150斤之间",weights[2]/float(sum));
+        series->append("150斤之上",weights[3]/float(sum));
+        series->setLabelsVisible(true);
+        series->setUseOpenGL(true);
+        series->slices().at(0)->setColor(QColor(13, 128, 217)); //设置颜色
+        series->slices().at(0)->setLabelColor(QColor(13, 128, 217));
+        series->slices().at(1)->setColor(QColor(69, 13, 217));
+        series->slices().at(1)->setLabelColor(QColor(69, 13, 217));
+        series->slices().at(2)->setColor(QColor(13, 217, 152));
+        series->slices().at(2)->setLabelColor(QColor(13, 217, 152));
+        series->slices().at(3)->setColor(QColor(13, 217, 110));
+        series->slices().at(3)->setLabelColor(QColor(13, 217, 110));
 
-    series->setLabelsVisible(true);
-    series->setUseOpenGL(true);
-    series->slices().at(0)->setColor(QColor(13, 128, 217)); //设置颜色
-    series->slices().at(0)->setLabelColor(QColor(13, 128, 217));
-    series->slices().at(1)->setColor(QColor(69, 13, 217));
-    series->slices().at(1)->setLabelColor(QColor(69, 13, 217));
-    series->slices().at(2)->setColor(QColor(13, 217, 152));
-    series->slices().at(2)->setLabelColor(QColor(13, 217, 152));
-    series->slices().at(3)->setColor(QColor(13, 217, 110));
-    series->slices().at(3)->setLabelColor(QColor(13, 217, 110));
-
-    m_chart->setTheme(QChart::ChartThemeLight);//设置白色主题
-    m_chart->setDropShadowEnabled(true);//背景阴影
-    m_chart->addSeries(series);//添加系列到QChart上
-
-    m_chart->setTitleBrush(QBrush(QColor(0, 0, 255))); //设置标题Brush
-    m_chart->setTitleFont(QFont("微软雅黑"));//设置标题字体
-    m_chart->setTitle("体重分布图");
-
-    //修改说明样式
-    m_chart->legend()->setVisible(true);
-    m_chart->legend()->setAlignment(Qt::AlignRight);//底部对齐
-    m_chart->legend()->setBackgroundVisible(true);//设置背景是否可视
-    m_chart->legend()->setAutoFillBackground(true);//设置背景自动填充
-    m_chart->legend()->setColor(QColor(222, 233, 251)); //设置颜色
-    m_chart->legend()->setLabelColor(QColor(0, 100, 255)); //设置标签颜色
-    m_chart->legend()->setMaximumHeight(150);
-
-    QChartView *chartView=new QChartView(m_chart,ui->ChartView);
-    chartView->setRenderHint(QPainter::Antialiasing);
-    chartView->resize(741,577);
-    chartView->show();
+        chartView->chart()->addSeries(series);//添加系列到QChart上
+        chartView->chart()->setTitle(str);
+        chartView->show();
+    }
 }
 
 void MainWindow::on_pushButton_numChart_clicked()
 {
+    QString str("各品种数量分布图");
     int sum=0,num[3]={0};
     farm->showDifferBreedNums(num);
     sum=num[0]+num[1]+num[2];
-    QPieSeries *series = new QPieSeries();    //连续的餅图数据
-    series->append("黑猪", num[0]/float(sum));
-    series->append("小花猪", num[1]/float(sum));
-    series->append("大花白猪", num[2]/float(sum));
-    series->setLabelsVisible(true);
-    series->setUseOpenGL(true);
-    series->slices().at(0)->setColor(QColor(13, 128, 217)); //设置颜色
-    series->slices().at(0)->setLabelColor(QColor(13, 128, 217));
-    series->slices().at(1)->setColor(QColor(69, 13, 217));
-    series->slices().at(1)->setLabelColor(QColor(69, 13, 217));
-    series->slices().at(2)->setColor(QColor(13, 217, 152));
-    series->slices().at(2)->setLabelColor(QColor(13, 217, 152));
+    if(chartView->chart()->title()==str){
+        QPieSeries *series=(QPieSeries *)chartView->chart()->series()[0];
+        series->slices().at(0)->setValue(num[0]/float(sum));
+        series->slices().at(1)->setValue(num[1]/float(sum));
+        series->slices().at(2)->setValue(num[2]/float(sum));
+        //qDebug()<<"update";
+        chartView->update();
+    }
+    else{
+        if(!chartView->chart()->series().isEmpty()){
+            chartView->chart()->removeSeries(chartView->chart()->series()[0]);
+        }
+        QPieSeries *series = new QPieSeries();    //连续的餅图数据
+        series->append("黑猪", num[0]/float(sum));
+        series->append("小花猪", num[1]/float(sum));
+        series->append("大花白猪", num[2]/float(sum));
+        series->setLabelsVisible(true);
+        series->setUseOpenGL(true);
+        series->slices().at(0)->setColor(QColor(13, 128, 217)); //设置颜色
+        series->slices().at(0)->setLabelColor(QColor(13, 128, 217));
+        series->slices().at(1)->setColor(QColor(69, 13, 217));
+        series->slices().at(1)->setLabelColor(QColor(69, 13, 217));
+        series->slices().at(2)->setColor(QColor(13, 217, 152));
+        series->slices().at(2)->setLabelColor(QColor(13, 217, 152));
 
-    QChart *m_chart = new QChart();
-    m_chart->setTheme(QChart::ChartThemeLight);//设置白色主题
-    m_chart->setDropShadowEnabled(true);//背景阴影
-    m_chart->addSeries(series);//添加系列到QChart上
-
-    m_chart->setTitleBrush(QBrush(QColor(0, 0, 255))); //设置标题Brush
-    m_chart->setTitleFont(QFont("微软雅黑"));//设置标题字体
-    m_chart->setTitle("各品种数量分布图");
-
-    //修改说明样式
-    m_chart->legend()->setVisible(true);
-    m_chart->legend()->setAlignment(Qt::AlignRight);//底部对齐
-    m_chart->legend()->setBackgroundVisible(true);//设置背景是否可视
-    m_chart->legend()->setAutoFillBackground(true);//设置背景自动填充
-    m_chart->legend()->setColor(QColor(222, 233, 251)); //设置颜色
-    m_chart->legend()->setLabelColor(QColor(0, 100, 255)); //设置标签颜色
-    m_chart->legend()->setMaximumHeight(150);
-
-    QChartView *chartView=new QChartView(m_chart,ui->ChartView);
-    chartView->setRenderHint(QPainter::Antialiasing);
-    chartView->resize(741,577);
-    chartView->show();
+        chartView->chart()->addSeries(series);//添加系列到QChart上
+        chartView->chart()->setTitle(str);
+        chartView->show();
+    }
 }
 
 void MainWindow::on_pushButton_feedTimeChart_clicked()
 {
+    QString str("喂养时间分布图");
     int sum=0,times[5]={0};
     farm->showDifferFeedTimes(times);
     sum=times[0]+times[1]+times[2]+times[3]+times[4];
-    QChart *m_chart = new QChart();
-    QPieSeries *series = new QPieSeries();    //连续的餅图数据
-    series->append("0~90天之间",times[0]/float(sum));
-    series->append("90~180天之间",times[1]/float(sum));
-    series->append("180~270天之间",times[2]/float(sum));
-    series->append("270~360天之间",times[3]/float(sum));
-    series->append("360天以上",times[4]/float(sum));
+    if(chartView->chart()->title()==str){
+            QPieSeries *series=(QPieSeries *)chartView->chart()->series()[0];
+            series->slices().at(0)->setValue(times[0]/float(sum));
+            series->slices().at(1)->setValue(times[1]/float(sum));
+            series->slices().at(2)->setValue(times[2]/float(sum));
+            series->slices().at(3)->setValue(times[3]/float(sum));
+            series->slices().at(4)->setValue(times[4]/float(sum));
+            //qDebug()<<"update";
+            chartView->update();
+        }
+        else{
+            if(!chartView->chart()->series().isEmpty()){
+                chartView->chart()->removeSeries(chartView->chart()->series()[0]);
+            }
+            QPieSeries *series = new QPieSeries();    //连续的餅图数据
+            series->append("0~90天之间",times[0]/float(sum));
+            series->append("90~180天之间",times[1]/float(sum));
+            series->append("180~270天之间",times[2]/float(sum));
+            series->append("270~360天之间",times[3]/float(sum));
+            series->append("360天以上",times[4]/float(sum));
 
-    series->setLabelsVisible(true);
-    series->setUseOpenGL(true);
-    series->slices().at(0)->setColor(QColor(13, 128, 217)); //设置颜色
-    series->slices().at(0)->setLabelColor(QColor(13, 128, 217));
-    series->slices().at(1)->setColor(QColor(69, 13, 217));
-    series->slices().at(1)->setLabelColor(QColor(69, 13, 217));
-    series->slices().at(2)->setColor(QColor(13, 217, 152));
-    series->slices().at(2)->setLabelColor(QColor(13, 217, 152));
-    series->slices().at(3)->setColor(QColor(13, 217, 110));
-    series->slices().at(3)->setLabelColor(QColor(13, 217, 110));
-    series->slices().at(4)->setColor(QColor(0,255,255));
-    series->slices().at(4)->setLabelColor(QColor(0,255,255));
+            series->setLabelsVisible(true);
+            series->setUseOpenGL(true);
+            series->slices().at(0)->setColor(QColor(13, 128, 217)); //设置颜色
+            series->slices().at(0)->setLabelColor(QColor(13, 128, 217));
+            series->slices().at(1)->setColor(QColor(69, 13, 217));
+            series->slices().at(1)->setLabelColor(QColor(69, 13, 217));
+            series->slices().at(2)->setColor(QColor(13, 217, 152));
+            series->slices().at(2)->setLabelColor(QColor(13, 217, 152));
+            series->slices().at(3)->setColor(QColor(13, 217, 110));
+            series->slices().at(3)->setLabelColor(QColor(13, 217, 110));
+            series->slices().at(4)->setColor(QColor(0,255,255));
+            series->slices().at(4)->setLabelColor(QColor(0,255,255));
 
-    m_chart->setTheme(QChart::ChartThemeLight);//设置白色主题
-    m_chart->setDropShadowEnabled(true);//背景阴影
-    m_chart->addSeries(series);//添加系列到QChart上
-
-    m_chart->setTitleBrush(QBrush(QColor(0, 0, 255))); //设置标题Brush
-    m_chart->setTitleFont(QFont("微软雅黑"));//设置标题字体
-    m_chart->setTitle("体重分布图");
-
-    //修改说明样式
-    m_chart->legend()->setVisible(true);
-    m_chart->legend()->setAlignment(Qt::AlignRight);//底部对齐
-    m_chart->legend()->setBackgroundVisible(true);//设置背景是否可视
-    m_chart->legend()->setAutoFillBackground(true);//设置背景自动填充
-    m_chart->legend()->setColor(QColor(222, 233, 251)); //设置颜色
-    m_chart->legend()->setLabelColor(QColor(0, 100, 255)); //设置标签颜色
-    m_chart->legend()->setMaximumHeight(150);
-
-    QChartView *chartView=new QChartView(m_chart,ui->ChartView);
-    chartView->setRenderHint(QPainter::Antialiasing);
-    chartView->resize(741,577);
-    chartView->show();
+            chartView->chart()->addSeries(series);//添加系列到QChart上
+            chartView->chart()->setTitle(str);
+            chartView->show();
+        }
 }
 
 void MainWindow::on_pushButton_showPigFarmStatus_clicked()
@@ -412,6 +419,8 @@ void MainWindow::on_actiondisplay_triggered()
     connect(penwidget,SIGNAL(visual_pig_clicked(int,int)),this,SLOT(pig_in_penWidget_clicked(int,int)));
     //必须放到已初始化的对象之后
     penwidget->show();
+    //ui->actiondisplay->setEnabled(false);
+    //connect(penwidget,SIGNAL(close(void)),this,SLOT(penWidgetClose(void)));
 }
 
 void MainWindow::pig_in_penWidget_clicked(int penID,int pigID){

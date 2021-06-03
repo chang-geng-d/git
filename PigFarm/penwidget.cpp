@@ -5,6 +5,7 @@
 #include<QMessageBox>
 #include<QTime>
 #include<QDebug>
+#include<QPainter>
 
 #include"visual_pig.h"
 
@@ -51,6 +52,17 @@ void penWidget::showPigsInPen(){
     }
 }
 
+void penWidget::paintEvent(QPaintEvent *event){
+    //绘制背景图
+    QPainter painter(this);
+    painter.drawPixmap(0,0,width(),height()-26,QPixmap("://sources/glass.png"));
+    QPen pen;
+    pen.setWidth(5);
+    pen.setStyle(Qt::DashDotDotLine);
+    painter.setPen(pen);
+    painter.drawRect(0,0,658,682);
+}
+
 void penWidget::deletePigsInPen(){
     int num=farm->showPigNumInPen(penID);
     for(int i=0;i<num;++i){
@@ -78,6 +90,7 @@ penWidget::~penWidget()
 {
     deletePigsInPen();
     delete ui;
+    emit close();
 }
 
 void penWidget::timerEvent(QTimerEvent *){

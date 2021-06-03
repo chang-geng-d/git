@@ -66,12 +66,12 @@ private slots:
 
 protected:
     void timerEvent(QTimerEvent *) override;
-
 private:
     Ui::MainWindow *ui;
     int timerID_1;
     int timerID_2;
     PigFarm *farm;
     penWidget *penwidget=NULL;
+    QChartView *chartView=NULL;
 };
 #endif // MAINWINDOW_H

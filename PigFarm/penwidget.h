@@ -19,11 +19,13 @@ public slots:
     void pig_clicked(int penID,int pigID);
 signals:
     void visual_pig_clicked(int penID,int pigID);
+    void close(void);
 private:
     Ui::penWidget *ui;
 protected:
     void timerEvent(QTimerEvent *) override;
     void mousePressEvent(QMouseEvent *event) override;
+    void paintEvent(QPaintEvent *event) override;
 private:
     int timerID;
     int penID=0;

@@ -5,11 +5,13 @@
         <file>sources/BlackPig.png</file>
         <file>sources/littlePig.png</file>
         <file>sources/button.png</file>
-        <file>sources/MacOS.qss</file>
         <file>sources/pixmap_pig_1.png</file>
         <file>sources/pig.png</file>
         <file>sources/glass.png</file>
         <file>sources/author.png</file>
         <file>sources/pig_pixmap_2.png</file>
+        <file>sources/pigsound.wav</file>
+        <file>sources/arrow.png</file>
+        <file>sources/MacOS.qss</file>
     </qresource>
 </RCC>

@@ -381,10 +381,10 @@ void MainWindow::on_pushButton_isolatePenInNum_clicked()
 
 void MainWindow::on_pushButton_startInfect_clicked()
 {
-    timerID_2=this->startTimer(500);
+    timerID_2=this->startTimer(250);
     while(timerID_1==timerID_2){
         killTimer(timerID_2);
-        timerID_2=this->startTimer(500);
+        timerID_2=this->startTimer(250);
     }
     farm->startInfect();
     ui->pushButton_startInfect->setEnabled(false);
@@ -404,10 +404,10 @@ void MainWindow::on_pushButton_pauseInfect_clicked()
 
 void MainWindow::on_pushButton_infectRestart_clicked()
 {
-    timerID_2=this->startTimer(500);
+    timerID_2=this->startTimer(250);
     while(timerID_1==timerID_2){
         killTimer(timerID_2);
-        timerID_2=this->startTimer(500);
+        timerID_2=this->startTimer(250);
     }
     ui->pushButton_pauseInfect->setEnabled(true);
     ui->pushButton_infectRestart->setEnabled(false);
@@ -432,6 +432,19 @@ void MainWindow::on_actionabout_triggered()
 {
     QMessageBox *about=new QMessageBox(QMessageBox::NoIcon,"关于作者","“我打出来的”\n\t——晖晖如是说",QMessageBox::Ok,this);
     about->setIconPixmap(QPixmap("://sources/author.png"));
+    about->setDetailedText("此程序有什么做得不好的地方，烦请各位大佬多多指正！");
     about->setAttribute(Qt::WA_DeleteOnClose);
     about->show();
+}
+
+void MainWindow::on_action_references_triggered()
+{
+    QMessageBox *refer=new QMessageBox(QMessageBox::NoIcon,"参考资料","<h4><a href=\"https://www.bilibili.com/video/BV144411j7W4\">B站QT视频教学</a></h4>"
+                                                                  "\n<h4><a href=\"https://zhuanlan.zhihu.com/c_119081535\">知乎QT教学</a></h4>"
+                                                                  "\n<h4><a href=\"https://www.baidu.com/\">百度一下</a></h4>"
+                                                                  "\n<h4><a href=\"https://wenku.baidu.com/link?url=0NWYic61l5YmCfXFtoM7y8fGhGzkjRRLy"
+                                                                  "mig5UkqYoZqoFKCBCFoCKMBMkb_KHt80trxzxxn19iGo2WSxIzbu5SHQIZMs57wzLkF-J4wy9HbtZ9d-OJS"
+                                                                  "zeZ6YcRjtEz9Rveahd7ZL9_gBL8eLNrpkK\">母猪的产后护理 :)</a></h4>",QMessageBox::Ok,this);
+    refer->setAttribute(Qt::WA_DeleteOnClose);
+    refer->show();
 }

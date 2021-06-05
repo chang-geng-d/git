@@ -28,6 +28,7 @@ QPushButton::default, QToolButton::default, QCommandLinkButton::default{
 }
 QPushButton:hover, QToolButton:hover, QCommandLinkButton:hover{
     color: #3d3d3d;
+    border:2px outset blue;
 }
 QPushButton:pressed, QToolButton:pressed, QCommandLinkButton:pressed{
     color: #aeaeae;
@@ -58,6 +59,7 @@ QLineEdit:focus, QTextEdit:focus, QPlainTextEdit:focus, QSpinBox:focus, QDoubleS
     border-left-color: qlineargradient(spread:pad, x1:1, y1:0, x2:0, y2:0, stop:0 #85b7e3, stop:1 #9ec1db);
     background-color: #f4f4f4;
     color: #3d3d3d;
+    border:2px outset blue;
 }
 QLineEdit:disabled, QTextEdit:disabled, QPlainTextEdit:disabled, QSpinBox:disabled, QDoubleSpinBox:disabled, QTimeEdit:disabled, QDateEdit:disabled, QDateTimeEdit:disabled {
     color: #b9b9b9;
@@ -110,7 +112,7 @@ QSpinBox::down-arrow, QDoubleSpinBox::down-arrow, QTimeEdit::down-arrow, QDateEd
     image: url(/usr/share/icons/Adwaita/16x16/actions/go-down-symbolic.symbolic.png);
 }
 QProgressBar {
-    max-height: 8px;
+    max-height: 15px;
     text-align: center;
     font: italic bold 11px;
     color: #3d3d3d;
@@ -192,25 +194,28 @@ QComboBox, QFontComboBox {
 QComboBox:editable, QComboBox:!editable, QComboBox::drop-down:editable, QComboBox:!editable:on, QComboBox::drop-down:editable:on {
     background: #ffffff;
 }
+QComboBox::hover {
+    border:2px outset blue;
+}
 QComboBox::drop-down {
     subcontrol-origin: padding;
     subcontrol-position: top right;
     width: 15px;
     color: #272727;
-    border-left-width: 1px;
+    border-left-width: 2px;
     border-left-color: darkgray;
     border-left-style: solid;
     border-top-right-radius: 3px;
     border-bottom-right-radius: 3px;
 }
 QComboBox::down-arrow {
-    image: url(/usr/share/icons/Adwaita/16x16/actions/go-down-symbolic.symbolic.png); /*Adawaita icon thene*/
+    image: url(://sources/arrow.png); /*Adawaita icon thene*/
+}
+QComboBox::down-arrow:on {
+   top: 1px;
+   left: 1px;
 }
 
-QComboBox::down-arrow:on {
-    top: 1px;
-    left: 1px;
-}
 QComboBox QAbstractItemView {
     border: 1px solid darkgray;
     border-radius: 8px;

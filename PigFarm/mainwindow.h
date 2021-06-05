@@ -64,6 +64,8 @@ private slots:
 
     void on_actionabout_triggered();
 
+    void on_action_references_triggered();
+
 protected:
     void timerEvent(QTimerEvent *) override;
 private:

@@ -100,7 +100,7 @@
               <x>0</x>
               <y>0</y>
               <width>405</width>
-              <height>510</height>
+              <height>506</height>
              </rect>
             </property>
             <attribute name="label">
@@ -121,6 +121,12 @@ border-radius:10px;</string>
                     <family>Arial</family>
                     <pointsize>12</pointsize>
                    </font>
+                  </property>
+                  <property name="text">
+                   <string>0</string>
+                  </property>
+                  <property name="alignment">
+                   <set>Qt::AlignCenter</set>
                   </property>
                  </widget>
                 </item>
@@ -288,6 +294,12 @@ border-radius:10px;</string>
                     <pointsize>11</pointsize>
                    </font>
                   </property>
+                  <property name="text">
+                   <string>0</string>
+                  </property>
+                  <property name="alignment">
+                   <set>Qt::AlignCenter</set>
+                  </property>
                  </widget>
                 </item>
                 <item row="0" column="0" colspan="2">
@@ -318,6 +330,9 @@ border-radius:10px;</string>
                <layout class="QGridLayout" name="gridLayout_7">
                 <item row="0" column="0">
                  <widget class="QPushButton" name="pushButton_restart">
+                  <property name="enabled">
+                   <bool>false</bool>
+                  </property>
                   <property name="font">
                    <font>
                     <family>Arial</family>
@@ -344,6 +359,9 @@ border-radius:10px;</string>
                 </item>
                 <item row="1" column="0">
                  <widget class="QPushButton" name="pushButton_pause">
+                  <property name="enabled">
+                   <bool>false</bool>
+                  </property>
                   <property name="font">
                    <font>
                     <family>Arial</family>
@@ -560,7 +578,7 @@ border-radius:10px;</string>
               <x>0</x>
               <y>0</y>
               <width>405</width>
-              <height>510</height>
+              <height>506</height>
              </rect>
             </property>
             <attribute name="label">
@@ -617,6 +635,9 @@ border-radius:10px;</string>
                <layout class="QGridLayout" name="gridLayout_11">
                 <item row="2" column="0">
                  <widget class="QPushButton" name="pushButton_infectRestart">
+                  <property name="enabled">
+                   <bool>false</bool>
+                  </property>
                   <property name="font">
                    <font>
                     <family>Arial</family>
@@ -630,6 +651,9 @@ border-radius:10px;</string>
                 </item>
                 <item row="2" column="1">
                  <widget class="QPushButton" name="pushButton_pauseInfect">
+                  <property name="enabled">
+                   <bool>false</bool>
+                  </property>
                   <property name="font">
                    <font>
                     <family>Arial</family>
@@ -643,6 +667,9 @@ border-radius:10px;</string>
                 </item>
                 <item row="0" column="1">
                  <widget class="QPushButton" name="pushButton_isolateAllInfectedPens">
+                  <property name="enabled">
+                   <bool>false</bool>
+                  </property>
                   <property name="font">
                    <font>
                     <family>Arial</family>
@@ -656,16 +683,28 @@ border-radius:10px;</string>
                 </item>
                 <item row="1" column="0">
                  <widget class="QLineEdit" name="lineEdit_isolateNum">
+                  <property name="enabled">
+                   <bool>false</bool>
+                  </property>
                   <property name="font">
                    <font>
                     <family>Arial</family>
                     <pointsize>12</pointsize>
                    </font>
                   </property>
+                  <property name="text">
+                   <string>0</string>
+                  </property>
+                  <property name="alignment">
+                   <set>Qt::AlignCenter</set>
+                  </property>
                  </widget>
                 </item>
                 <item row="1" column="1">
                  <widget class="QPushButton" name="pushButton_isolatePenInNum">
+                  <property name="enabled">
+                   <bool>false</bool>
+                  </property>
                   <property name="font">
                    <font>
                     <family>Arial</family>
@@ -1046,6 +1085,10 @@ padding:2px 4px;</string>
         <pointsize>22</pointsize>
        </font>
       </property>
+      <property name="styleSheet">
+       <string notr="true">border:2px groove gray;
+border-radius:10px;</string>
+      </property>
       <property name="text">
        <string>养猪场管理系统</string>
       </property>
@@ -1080,6 +1123,7 @@ padding:2px 4px;</string>
      <string>关于</string>
     </property>
     <addaction name="actionabout"/>
+    <addaction name="action_references"/>
    </widget>
    <addaction name="menu"/>
    <addaction name="menu_2"/>
@@ -1111,6 +1155,11 @@ padding:2px 4px;</string>
   <action name="actionabout">
    <property name="text">
     <string>关于作者</string>
+   </property>
+  </action>
+  <action name="action_references">
+   <property name="text">
+    <string>参考资料</string>
    </property>
   </action>
  </widget>

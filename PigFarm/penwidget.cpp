@@ -6,6 +6,7 @@
 #include<QTime>
 #include<QDebug>
 #include<QPainter>
+#include<QSound>
 
 #include"visual_pig.h"
 
@@ -84,6 +85,10 @@ penWidget::penWidget(QWidget *parent,PigFarm *pigFarm) :
     //qDebug()<<"enter";
     QMessageBox message(QMessageBox::Information,"提示","使用左键单击查看上一猪栏，使用右键单击查看下一猪栏",QMessageBox::Ok,this);
     message.exec();
+    //使用背景音乐
+    QSound *sound=new QSound("://sources/pigsound.wav",this);
+    sound->setLoops(3);
+    sound->play();
 }
 
 penWidget::~penWidget()
